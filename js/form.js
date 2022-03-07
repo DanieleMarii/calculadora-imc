@@ -3,6 +3,7 @@ botaoAdicionar.addEventListener("click", function (event) {
   event.preventDefault();
 
   const form = document.querySelector("#form-adiciona");
+
   // extraindo infromações do paciente do form
   const paciente = obtemPacienteDoFormulario(form);
   console.log(paciente);
@@ -10,15 +11,36 @@ botaoAdicionar.addEventListener("click", function (event) {
   // cria a tr e a td do paciente
   const pacienteTr = montaTr(paciente);
   
+  const erros = validaPaciente(paciente);
+  console.log(erros);
+  if (erros.length > 0) {
+    exibeMensagensDeErro(erros);
+    // var mensagemErro = document.querySelector("#mensagem-erro");
+    // mensagemErro.textContent = erro;
+    return;
+  }
+
   // adicionando o paciente na tabela 
   const tabela = document.querySelector("#tabela-pacientes");
   tabela.appendChild(pacienteTr);
   form.reset();
+  const mensagemErro = document.querySelector("#mensagens-erro");
+  mensagemErro.innerHTML = "";
 
   // console.log(pacienteTr);
   // console.log(form.altura.value);
   // console.log(form.peso.value);
 });
+
+function exibeMensagensDeErro(erros) {
+  const ul = document.querySelector("#mensagens-erro");
+  ul.innerHTML = "";
+  erros.forEach(function (erro) {
+    const li = document.createElement("li");
+    li.textContent = erro;
+    ul.appendChild(li);
+  });
+}
 
 function obtemPacienteDoFormulario(form) {
 
@@ -56,4 +78,27 @@ function montaTd(dado,classe) {
   td.classList.add(classe);
 
   return td;
+}
+
+function validaPaciente(paciente) {
+  const erros = [];
+  if (paciente.nome.length == 0) {
+    erros.push("O nome não pode ser em branco")
+  }
+  if (!validaPeso(paciente.peso)) {
+    erros.push("Peso é inválido");
+  } if (!validaAltura(paciente.altura)) {
+    erros.push("Altura é inválida");
+  }
+  if (paciente.gordura.length == 0) {
+    erros.push("A gordura não pode ser em branco");
+  }
+  if (paciente.peso.length == 0) {
+    erros.push("O peso não pode ser em branco");
+  }
+  if (paciente.altura.length == 0) {
+    erros.push("A altura não pode ser em branco");
+    
+  }
+  return erros;
 }
