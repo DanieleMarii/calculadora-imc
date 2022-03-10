@@ -1,6 +1,6 @@
 const botaoAdicionar = document.querySelector("#adicionar-paciente");
 botaoAdicionar.addEventListener("click", function (event) {
-  event.preventDefault();
+  event.preventDefault(); // previne um comportamento padrão 
 
   const form = document.querySelector("#form-adiciona");
 
